@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
-public class Comment {
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,9 +27,9 @@ public class Comment {
     @JoinColumn(name = "thread_id", nullable = false)
     private ThreadEntity thread;
 
-    public Comment() {}
+    public CommentEntity() {}
 
-    public Comment(String content, LocalDateTime creationDateTime, UserEntity user, ThreadEntity thread) {
+    public CommentEntity(String content, LocalDateTime creationDateTime, UserEntity user, ThreadEntity thread) {
         this.content = content;
         this.creationDateTime = creationDateTime;
         this.user = user;

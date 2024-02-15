@@ -54,14 +54,29 @@ public class ThreadService implements IThreadService {
     }
 
     @Override
-    public void newThread(ThreadNewDto provided) {
+    public ThreadDto newThread(ThreadNewDto provided) {
         UserEntity user = userService.actualUser();
 
         ThreadEntity newThread = new ThreadEntity(provided.getTitle(),provided.getContent(), LocalDateTime.now(),user);
 
         threadRepository.save(newThread);
+
+        return threadMapper.threadToThreadDto(newThread);
     }
 
+    @Override
+    public ThreadEntity createThread(String title,String content,LocalDateTime creationDateTime,UserEntity user) {
+        ThreadEntity newThread = new ThreadEntity(title,content,creationDateTime,user);
+
+        threadRepository.save(newThread);
+
+        return newThread;
+    }
+
+    @Override
+    public void saveThread(ThreadEntity thread) {
+        threadRepository.save(thread);
+    }
     @Override
     public boolean deleteThread(Long id) {
         Long userId = userService.actualUser().getId();

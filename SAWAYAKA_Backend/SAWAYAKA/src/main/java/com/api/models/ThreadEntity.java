@@ -25,6 +25,12 @@ public class ThreadEntity {
     @Column(nullable = false)
     private LocalDateTime creationDateTime;
 
+    @Column(nullable = false)
+    private LocalDateTime lastActivity;
+
+    @Column(nullable = false)
+    private int commentCount;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,7 +38,7 @@ public class ThreadEntity {
 
 
     @OneToMany(mappedBy = "thread",cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+    private List<CommentEntity> comments;
 
     public ThreadEntity() {}
 
@@ -41,6 +47,24 @@ public class ThreadEntity {
         this.content = content;
         this.creationDateTime = creationDateTime;
         this.user = user;
+        this.lastActivity = creationDateTime;
+        this.commentCount = 0;
+    }
+
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public Long getId() {return id;}
@@ -77,11 +101,11 @@ public class ThreadEntity {
         this.user = user;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentEntity> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 }

@@ -8,6 +8,8 @@ public interface IRoleService {
 
     Role getUserRole();
 
+    Role createRole(String name);
+
      void assignUserRoles(UserEntity user, Role... roles);
 
     void disAssignUserRoles(UserEntity user);

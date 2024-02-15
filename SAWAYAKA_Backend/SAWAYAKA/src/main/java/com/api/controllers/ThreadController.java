@@ -82,9 +82,9 @@ public class ThreadController {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
 
-        threadService.newThread(provided);
+        ThreadDto threadDto = threadService.newThread(provided);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(threadDto);
     }
 
     @DeleteMapping("/{id}/delete")

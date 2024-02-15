@@ -1,9 +1,21 @@
 package com.api.dtos;
 
+import jakarta.validation.constraints.Email;
+
 public class UserDto {
     private Long id;
     private String username;
     private String name;
+
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public void setId(Long id) {
         this.id = id;

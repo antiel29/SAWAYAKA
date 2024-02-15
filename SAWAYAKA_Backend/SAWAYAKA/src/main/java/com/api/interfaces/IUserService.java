@@ -5,6 +5,7 @@ import com.api.dtos.UserRegisterDto;
 import com.api.dtos.UserUpdateDto;
 import com.api.models.Role;
 import com.api.models.UserEntity;
+import jakarta.validation.constraints.Email;
 
 import java.util.List;
 
@@ -13,17 +14,20 @@ public interface IUserService  {
      List<UserDto> getUsers();
      UserDto getUser(Long id);
 
+    UserDto getUser(String Username);
+
      Boolean isUsernameTaken(String username);
+
+    Boolean isEmailTaken(String email);
 
      UserEntity actualUser();
 
 
-     void registerUser(UserRegisterDto user);
+     UserDto registerUser(UserRegisterDto user);
 
-     UserEntity createNamedUser(String username, String password, String name, Role... roles);
-     UserEntity createAnonymusUser(String username, String password, Role... roles);
+     UserEntity createUser(String username, String password, String name, String email ,Role... roles);
 
-    void updateCurrentUser(UserUpdateDto userUpdateDto);
+    UserDto updateCurrentUser(UserUpdateDto userUpdateDto);
 
      void deleteCurrentUser();
 

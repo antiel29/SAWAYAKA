@@ -1,8 +1,10 @@
 package com.api;
 
+import com.api.interfaces.ICommentService;
 import com.api.interfaces.IRoleService;
+import com.api.interfaces.IThreadService;
 import com.api.interfaces.IUserService;
-import com.api.models.Comment;
+import com.api.models.CommentEntity;
 import com.api.models.Role;
 import com.api.models.ThreadEntity;
 import com.api.models.UserEntity;
@@ -24,19 +26,22 @@ public class Seed implements CommandLineRunner {
 
     private final IUserRepository userRepository;
 
-    private final IRoleService roleService;
-    private final IThreadRepository threadRepository;
-    private final ICommentRepository commentRepository;
+    private final IUserService userService;
 
-    private final IRoleRepository roleRepository;
+    private final IThreadService threadService;
+
+    private final ICommentService commentService;
+
+    private final IRoleService roleService;
+
 
     @Autowired
-    public Seed(IUserRepository userRepository, IRoleService roleService, IThreadRepository threadRepository, ICommentRepository commentRepository, IRoleRepository roleRepository) {
+    public Seed(IUserRepository userRepository, IUserService userService, IRoleService roleService, IThreadService threadService, ICommentService commentService) {
         this.userRepository = userRepository;
+        this.userService = userService;
         this.roleService = roleService;
-        this.threadRepository = threadRepository;
-        this.commentRepository = commentRepository;
-        this.roleRepository = roleRepository;
+        this.threadService = threadService;
+        this.commentService = commentService;
     }
 
     @Override
@@ -46,59 +51,33 @@ public class Seed implements CommandLineRunner {
 
     private void seedData(){
         if(userRepository.count() == 0){
-            List<ThreadEntity> threads = new ArrayList<>();
-            List<Comment> comments = new ArrayList<>();
+            //------------------------------------   ROLES   ---------------------------------------------------//
+            Role admin = roleService.createRole("ADMIN");
+            Role user = roleService.createRole("USER");
+            //-----------------------------------   USERS    ---------------------------------------------------//
+            UserEntity mamiyaTakuji = userService.createUser("mamiya", "riruru", "Mamiya Takuji","mamiya@hotmail.com",admin);
 
-            //------------------------------------------------------------------------------------------//
-            List<Role> roles = new ArrayList<>();
+            UserEntity yukiMinakami = userService.createUser("YAKIUCHI", "SIZUGATEKE", "Shibata Katsuie","yuki@hotmail.com",user);
 
-            Role admin = new Role("ADMIN");
-            roles.add(admin);
-            Role user = new Role("USER");
-            roles.add(user);
+            UserEntity takashimaZakuro = userService.createUser("zakuro", "cheshirecat", "Takashima Zakuro","zakuro@hotmail.com",user);
 
-            List<UserEntity> users = new ArrayList<>();
+            UserEntity akasakaMegu = userService.createUser("megu", "megu123", "Megu","megu@hotmail.com",user);
 
-            UserEntity mamiyaTakuji = new UserEntity("mamiya", "riruru", "Mamiya Takuji");
-            roleService.assignUserRoles(mamiyaTakuji,admin);
-            users.add(mamiyaTakuji);
+            UserEntity kitamiSatoko = userService.createUser("satokon", "satoko123", "Satoko","satoko@hotmail.com",user);
 
-            UserEntity yuki = new UserEntity("YAKIUCHI", "SIZUGATEKE", "Shibata Katsuie");
-            roleService.assignUserRoles(yuki,user);
-            users.add(yuki);
+            UserEntity anonymousStudentKAERA = userService.createUser("KAERA", "password123","Anonymous Kita High Student","kaera@hotmail.com",user);
 
-            UserEntity takashimaZakuro = new UserEntity("zakuro", "cheshirecat", "Takashima Zakuro");
-            roleService.assignUserRoles(takashimaZakuro,user);
-            users.add(takashimaZakuro);
+            UserEntity anonymousStudentInkin = userService.createUser("inkin", "password123","Anonymous Kita High Student","inkin@hotmail.com",user);
 
-            UserEntity akasakaMegu = new UserEntity("megu", "megu123", "Megu");
-            roleService.assignUserRoles(akasakaMegu,user);
-            users.add(akasakaMegu);
+            UserEntity anonymousStudentADAMO = userService.createUser("ADAMO", "password123","Anonymous Kita High Student","adamo@hotmail.com",user);
 
-            UserEntity kitamiSatoko = new UserEntity("satokon", "satoko123", "Satoko");
-            roleService.assignUserRoles(kitamiSatoko,user);
-            users.add(kitamiSatoko);
-
-            UserEntity anonymousStudentKAERA = new UserEntity("KAERA", "password123");
-            roleService.assignUserRoles(anonymousStudentKAERA,user);
-            users.add(anonymousStudentKAERA);
-
-            UserEntity anonymousStudentInkin = new UserEntity("inkin", "password123");
-            roleService.assignUserRoles(anonymousStudentInkin,user);
-            users.add(anonymousStudentInkin);
-
-            UserEntity anonymousStudentADAMO = new UserEntity("ADAMO", "password123");
-            roleService.assignUserRoles(anonymousStudentADAMO,user);
-            users.add(anonymousStudentADAMO);
-
-            //-----------------------------------------------------------------------------------------//
-            ThreadEntity threadSatoko = new ThreadEntity("Megu and Satoko's friendship thread.",
+            //---------------------------------------   THREADS   --------------------------------------------------//
+            ThreadEntity threadSatoko = threadService.createThread("Megu and Satoko's friendship thread.",
                     "anyway, i made this thread",
                     LocalDateTime.of(2011, 8, 15, 1, 21, 25),
-                    users.get(5));
-            threads.add(threadSatoko);
+                    akasakaMegu);
 
-            ThreadEntity threadZakuro = new ThreadEntity("Bick Hazard is coming.",
+            ThreadEntity threadZakuro = threadService.createThread("Bick Hazard is coming.",
                     "The sealed nevus uses a Specialized Physics Bug (i.e. an Outer Magic Dark Summons Bug) to plant negative thoughts in the human race.\n" +
                             "That is the true nature of the battle between the dictators and tyrants of the world (Hitler, Genghis Khan, Marie Antoinette, etc.) and " +
                             "us (the peasants, the revolutionaries, the proletariat).\n" +
@@ -108,9 +87,8 @@ public class Seed implements CommandLineRunner {
                             "A great disaste will occur!",
                     LocalDateTime.of(2012, 7, 11, 22, 2, 13),
                     takashimaZakuro);
-            threads.add(threadZakuro);
 
-            ThreadEntity threadMamiya = new ThreadEntity("Who shall be saved and who shall not.",
+            ThreadEntity threadMamiya = threadService.createThread("Who shall be saved and who shall not.",
                     "Many of you have confirmed it.\n" +
                             "Many of you have seen it.\n" +
                             "Takashima's message predicted my awakening.\n" +
@@ -119,75 +97,54 @@ public class Seed implements CommandLineRunner {
                             "Now it is time to determine who will be saved and who will not.",
                     LocalDateTime.of(2012, 7, 15, 11, 23, 12),
                     mamiyaTakuji);
-            threads.add(threadMamiya);
 
-            //-----------------------------------------------------------------------------------------//
-            Comment commentSatokoSatoko1 = new Comment("anyway, i made this thread",
-                    LocalDateTime.of(2011, 8, 15, 1, 21, 25),
-                    kitamiSatoko,
-                    threadSatoko);
-            comments.add(commentSatokoSatoko1);
-
-            Comment commentMeguSatoko2 = new Comment("you sure did.\n" +
+            //---------------------------------------   COMMENTS   --------------------------------------------------//
+            commentService.createComment("you sure did.\n" +
                     "are you sure no one else can see this board?",
                     LocalDateTime.of(2011, 8, 15, 22, 24, 5),
                     akasakaMegu,
                     threadSatoko);
-            comments.add(commentMeguSatoko2);
 
-            Comment commentSatokoSatoko3 = new Comment("apparently.",
+            commentService.createComment("apparently.",
                     LocalDateTime.of(2011, 8, 15, 23, 21, 22),
                     kitamiSatoko,
                     threadSatoko);
-            comments.add(commentSatokoSatoko3);
 
-            Comment commentAnonymousZakuro1 = new Comment("Stay away from me, Bick Hazard",
+            commentService.createComment("Stay away from me, Bick Hazard",
                     LocalDateTime.of(2012, 7, 11, 22, 10, 15),
                     anonymousStudentKAERA,
                     threadZakuro);
-            comments.add(commentAnonymousZakuro1);
 
-            Comment commentAnonymousZakuro2 = new Comment("lol",
+            commentService.createComment("lol",
                     LocalDateTime.of(2012, 7, 11, 22, 16, 25),
                     anonymousStudentKAERA,
                     threadZakuro);
-            comments.add(commentAnonymousZakuro2);
 
-            Comment commentAnonymousZakuro3 = new Comment("Pls stay away from me kthx",
+            commentService.createComment("Pls stay away from me kthx",
                     LocalDateTime.of(2012, 7, 11, 22, 17, 23),
                     anonymousStudentKAERA,
                     threadZakuro);
-            comments.add(commentAnonymousZakuro3);
 
-            Comment commentZakuroZakuro4 = new Comment("Don't joke around!",
+            commentService.createComment("Don't joke around!",
                     LocalDateTime.of(2012, 7, 11, 22, 21, 13),
                     takashimaZakuro,
                     threadZakuro);
-            comments.add(commentZakuroZakuro4);
 
-            Comment commentAnonymousMamiya1 = new Comment("Another one right after Takashima?\n" +
+            commentService.createComment("Another one right after Takashima?\n" +
                     "Knock it off with that crap.",
                     LocalDateTime.of(2012, 7, 15, 11, 26, 15),
                     anonymousStudentKAERA,
                     threadMamiya);
-            comments.add(commentAnonymousMamiya1);
 
-            Comment commentAnonymousMamiya2 = new Comment("I reported you to the police.",
+            commentService.createComment("I reported you to the police.",
                     LocalDateTime.of(2012, 7, 15, 11, 30, 20),
                     anonymousStudentInkin,
                     threadMamiya);
-            comments.add(commentAnonymousMamiya2);
 
-            Comment commentAnonymousMamiya3 = new Comment("lol they still haven't caught you yet?",
+            commentService.createComment("lol they still haven't caught you yet?",
                     LocalDateTime.of(2012, 7, 15, 11, 35, 40),
                     anonymousStudentADAMO,
                     threadMamiya);
-            comments.add(commentAnonymousMamiya3);
-
-            roleRepository.saveAll(roles);
-            userRepository.saveAll(users);
-            threadRepository.saveAll(threads);
-            commentRepository.saveAll(comments);
 
         }
     }

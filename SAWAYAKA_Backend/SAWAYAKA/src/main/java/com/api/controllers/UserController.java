@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    @Operation(summary = "Get a user by id", description = "This endpoint returns a user.")
+    @Operation(summary = "Get logged user", description = "This endpoint returns a user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the user"),
             @ApiResponse(responseCode = "404",description = "UserEntity not found"),
@@ -84,9 +84,9 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
-        userService.updateCurrentUser(userUpdateDto);
+        UserDto userDto= userService.updateCurrentUser(userUpdateDto);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(userDto);
     }
 
     @DeleteMapping("/current/delete")

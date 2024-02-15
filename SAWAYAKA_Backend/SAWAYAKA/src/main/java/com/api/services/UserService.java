@@ -10,6 +10,7 @@ import com.api.models.Role;
 import com.api.models.UserEntity;
 import com.api.repository.IUserRepository;
 import com.api.security.CustomUserDetailsService;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,9 +48,21 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserDto getUser(String username){
+        UserEntity user = userRepository.findByUsername(username).orElse(null);
+        return userMapper.userToUserDto(user);
+    }
+
+    @Override
     public Boolean isUsernameTaken(String username) {
 
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean isEmailTaken(String email) {
+
+        return userRepository.existsByEmail(email);
     }
 
     @Override
@@ -61,21 +74,24 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void registerUser(UserRegisterDto user){
-        UserEntity newUser = new UserEntity(user.getUsername(),passwordEncoder.encode(user.getPassword()));
+    public UserDto registerUser(UserRegisterDto user){
+        UserEntity newUser = new UserEntity(user.getUsername(),passwordEncoder.encode(user.getPassword()),user.getEmail());
 
         roleService.assignUserRoles(newUser,roleService.getUserRole());
 
         userRepository.save(newUser);
+
+        return userMapper.userToUserDto(newUser);
     }
 
 
     @Override
-    public void updateCurrentUser(UserUpdateDto userUpdateDto) {
+    public UserDto updateCurrentUser(UserUpdateDto userUpdateDto) {
         UserEntity user = actualUser();
         user.setName(userUpdateDto.getName());
 
         userRepository.save(user);
+        return userMapper.userToUserDto(user);
     }
     @Override
     public void deleteCurrentUser() {
@@ -85,24 +101,18 @@ public class UserService implements IUserService {
         userRepository.delete(user);
 
     }
-
     @Override
     public UserDto getCurrentUser() {
         UserEntity user = actualUser();
         return userMapper.userToUserDto(user);
     }
 
-
-
-    public UserEntity createNamedUser(String username, String password, String name, Role... roles) {
-        UserEntity user = new UserEntity(username, password, name);
-        roleService.assignUserRoles(user, roles);
-        return user;
-    }
-    public UserEntity createAnonymusUser(String username, String password, Role... roles) {
-        UserEntity user = new UserEntity(username, password);
-        roleService.assignUserRoles(user, roles);
-        return user;
+    @Override
+    public UserEntity createUser(String username, String password, String name, String email, Role... roles){
+        UserEntity newUser = new UserEntity(username, passwordEncoder.encode(password), name,email);
+        roleService.assignUserRoles(newUser, roles);
+        userRepository.save(newUser);
+        return newUser;
     }
 
 

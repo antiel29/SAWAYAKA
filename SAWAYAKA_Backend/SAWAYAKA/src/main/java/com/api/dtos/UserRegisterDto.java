@@ -1,5 +1,6 @@
 package com.api.dtos;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 public class UserRegisterDto {
@@ -8,6 +9,17 @@ public class UserRegisterDto {
 
     @Size(min=5,max=60,message = "Password must be between 5 and 50 characters")
     public String password;
+
+    @Email(message = "Invalid email")
+    public String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;

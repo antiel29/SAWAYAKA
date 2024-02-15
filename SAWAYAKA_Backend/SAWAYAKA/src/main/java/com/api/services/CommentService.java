@@ -6,7 +6,7 @@ import com.api.interfaces.ICommentService;
 import com.api.interfaces.IThreadService;
 import com.api.interfaces.IUserService;
 import com.api.mappers.ICommentMapper;
-import com.api.models.Comment;
+import com.api.models.CommentEntity;
 import com.api.models.ThreadEntity;
 import com.api.models.UserEntity;
 import com.api.repository.ICommentRepository;
@@ -37,13 +37,13 @@ public class CommentService implements ICommentService {
 
     @Override
     public List<CommentDto> getComments() {
-        List<Comment> comments = commentRepository.findAll();
+        List<CommentEntity> comments = commentRepository.findAll();
         return commentMapper.commentsToCommentsDto(comments);
     }
 
     @Override
     public CommentDto getComment(Long id) {
-        Comment comment = commentRepository.findById(id).orElse(null);
+        CommentEntity comment = commentRepository.findById(id).orElse(null);
         return commentMapper.commentToCommentDto(comment);
 
     }
@@ -52,31 +52,49 @@ public class CommentService implements ICommentService {
     public List<CommentDto> getCurrentComments() {
         Long userId = userService.actualUser().getId();
 
-        List<Comment> comments = commentRepository.findByUserId(userId);
+        List<CommentEntity> comments = commentRepository.findByUserId(userId);
         return commentMapper.commentsToCommentsDto(comments);
     }
 
     @Override
     public List<CommentDto> getThreadComments(Long threadId) {
-        List<Comment> comments = commentRepository.findByThreadId(threadId);
+        List<CommentEntity> comments = commentRepository.findByThreadId(threadId);
         return commentMapper.commentsToCommentsDto(comments);
     }
 
     @Override
-    public void newComment(CommentNewDto provided) {
+    public CommentDto newComment(CommentNewDto provided) {
         UserEntity user = userService.actualUser();
         ThreadEntity thread = threadService.getThread(provided.getThreadId());
 
-        Comment newComment = new Comment(provided.getContent(), LocalDateTime.now(), user, thread);
+        thread.setCommentCount(thread.getCommentCount()+1);
+        thread.setLastActivity(LocalDateTime.now());
+        threadService.saveThread(thread);
+
+        CommentEntity newComment = new CommentEntity(provided.getContent(), LocalDateTime.now(), user, thread);
+        commentRepository.save(newComment);
+
+        return commentMapper.commentToCommentDto(newComment);
+    }
+
+    @Override
+    public CommentEntity createComment(String content, LocalDateTime creationDateTime, UserEntity user, ThreadEntity thread) {
+
+        thread.setCommentCount(thread.getCommentCount()+1);
+        thread.setLastActivity(creationDateTime);
+        threadService.saveThread(thread);
+
+        CommentEntity newComment = new CommentEntity(content,creationDateTime, user, thread);
 
         commentRepository.save(newComment);
+        return newComment;
     }
 
     @Override
     public boolean deleteComment(Long id) {
         Long userId = userService.actualUser().getId();
 
-        Comment comment = commentRepository.findById(id).orElse(null);
+        CommentEntity comment = commentRepository.findById(id).orElse(null);
 
         if (Objects.equals(userId, comment.getUser().getId())) {
             commentRepository.delete(comment);

@@ -89,9 +89,9 @@ public class CommentController {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
 
-        commentService.newComment(provided);
+        CommentDto commentDto =commentService.newComment(provided);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(commentDto);
     }
 
     @DeleteMapping("/{id}/delete")

@@ -13,6 +13,26 @@ public class ThreadDto {
 
     private LocalDateTime creationDateTime;
 
+    private LocalDateTime lastActivity;
+
+    private int commentCount;
+
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
     private Long userId;
 
     public Long getUserId() {

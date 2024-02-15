@@ -1,7 +1,7 @@
 package com.api.mappers;
 
 import com.api.dtos.CommentDto;
-import com.api.models.Comment;
+import com.api.models.CommentEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -14,7 +14,7 @@ public interface ICommentMapper {
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "threadId", source = "thread.id")
-    CommentDto commentToCommentDto(Comment comment);
+    CommentDto commentToCommentDto(CommentEntity comment);
 
-    List<CommentDto> commentsToCommentsDto(List<Comment> comments);
+    List<CommentDto> commentsToCommentsDto(List<CommentEntity> comments);
 }

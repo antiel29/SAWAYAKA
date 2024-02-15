@@ -1,6 +1,7 @@
 package com.api.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
@@ -22,13 +23,17 @@ public class UserEntity {
     @Size(min=5,max=60)
     private String password;
 
+    @Column(nullable = false,unique = true)
+    @Email
+    private String email;
+
     @Column(nullable = false)
     @Size(min=3,max=60)
     private String name;
     private boolean approved;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+    private List<CommentEntity> comments;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<ThreadEntity> threads;
@@ -42,19 +47,29 @@ public class UserEntity {
 
     public UserEntity(){}
 
-    public UserEntity(String username, String password){
+    public UserEntity(String username, String password, String email){
         this.username = username;
         this.password = password;
+        this.email = email;
         this.name = "Anonymous Kita High Student";
         this.approved = true;
     }
 
-    public UserEntity(String username, String password, String name){
+    public UserEntity(String username, String password, String name , String email){
         this.username = username;
         this.password = password;
+        this.email = email;
         this.name = name;
         this.approved = true;
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getId() {
@@ -83,11 +98,11 @@ public class UserEntity {
     }
 
 
-    public List<Comment> getComments() {
+    public List<CommentEntity> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 
