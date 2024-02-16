@@ -3,7 +3,7 @@
     Sawayaka
 </h3>
 
-<p>Sawayaka is a REST API forum inspired on Subarashiki hibi. This api allow users to register ,create threads, and engage in discussions through comments. </p>
+<p>Sawayaka is a REST API forum inspired on <a href="https://example.com/subarashiki-hibi" target="_blank">Subarashiki hibi<a/>. This api allow users to register ,create threads, and engage in discussions through comments. </p>
 
 ## Table of Contents
 
