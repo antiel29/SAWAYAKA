@@ -15,10 +15,10 @@
 
 ## Technologies
 
-- **Backend:** **JAVA 21**.
-- **Security:** **Spring boot Security**.
-- **Authentication:** **JWT**.
-- **Frontend:** **React**.
-- **Database:** **MySQL**.
-- **ORM:** **Hibernate**.
-- **Queries:** **HQL**.
+- **Backend:** Spring Boot (JAVA 21).
+- **Frontend:** React.
+- **Security:** Spring boot Security.
+- **Authentication:** JWT.
+- **Database:** MySQL.
+- **ORM:** Hibernate.
+- **Queries:** HQL.
