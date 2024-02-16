@@ -1,4 +1,4 @@
 <h3 align="center">
-	<img src="https://github.com/antiel29/SAWAYAKA/Frontend/SAWAYAKA/src/assets/images/cat_zakuro.png" width="100" alt="Logo"/><br/>
-	Sawayaka
+    <img src="https://raw.githubusercontent.com/antiel29/SAWAYAKA/main/Frontend/SAWAYAKA/src/assets/images/cat_zakuro.png" width="100" alt="Logo"/><br/>
+    Sawayaka
 </h3>
