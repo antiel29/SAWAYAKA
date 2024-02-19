@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useAuth } from "../context/AuthContext";
 import UserDetail from "../components/profile/UserDetail";
@@ -7,11 +6,9 @@ import Button from "../components/common/Button";
 function ProfilePage() {
   const { user, updateCurrentUser, deleteCurrentUser } = useUser();
   const { logout } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = async (editedUser: any) => {
     await updateCurrentUser(editedUser);
-    setIsEditing(false);
   };
 
   const handleSubmit = async () => {

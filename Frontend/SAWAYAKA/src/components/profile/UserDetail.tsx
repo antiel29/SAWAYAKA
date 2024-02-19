@@ -1,4 +1,3 @@
-// En el componente UserDetail
 import { useState } from "react";
 import Button from "../common/Button";
 
