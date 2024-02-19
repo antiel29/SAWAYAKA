@@ -5,7 +5,6 @@
   "homepage": "http://antiel29.github.io/sawayaka",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
     "deploy":"gh-pages -d dist",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc && vite build",
