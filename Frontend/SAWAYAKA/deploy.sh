@@ -11,4 +11,4 @@ git checkout -b main
 git add -A
 git commit -m 'deploy'
 
-git push -f git@github.com:antiel29/SAWAYAKA/tree/main/Frontend/SAWAYAKA.git main:gh-pages
+git push -f git@github.com:antiel29/SAWAYAKA.git main:gh-pages
