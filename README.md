@@ -8,7 +8,7 @@
 <h3 align="center">Video demostration</h3>
 
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=ComMy8z6juI"><img src="https://img.youtube.com/vi/ComMy8z6juI/0.jpg" alt="Youtube image"></a>
+  <a href="https://www.youtube.com/watch?v=ComMy8z6juI"><img src="https://raw.githubusercontent.com/antiel29/SAWAYAKA/main/Frontend/SAWAYAKA/src/assets/images/Youtube%20Preview.png" alt="Youtube image"></a>
 </div>
 
 ## Table of Contents
