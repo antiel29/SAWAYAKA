@@ -6,7 +6,7 @@
 <p>Sawayaka is a REST API forum inspired on <a href="https://store.steampowered.com/app/658620/Wonderful_Everyday_Down_the_RabbitHole/" target="_blank">Subarashiki hibi<a/>. This api allow users to register ,create threads, and engage in discussions through comments. </p>
     
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=ComMy8z6juI"><img src="https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" alt="IMAGE ALT TEXT"></a>
+  <a href="https://www.youtube.com/watch?v=ComMy8z6juI"><img src="https://img.youtube.com/vi/ComMy8z6juI/0.jpg" alt="Youtube image"></a>
 </div>
 
 ## Table of Contents
